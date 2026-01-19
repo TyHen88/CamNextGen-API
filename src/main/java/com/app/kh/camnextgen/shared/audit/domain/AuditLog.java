@@ -12,8 +12,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Entity
-@Table(name = "audit_logs")
+@Entity(name = "SharedAuditLog")
+@Table(name = "shared_audit_logs")
 public class AuditLog {
 
     @Id

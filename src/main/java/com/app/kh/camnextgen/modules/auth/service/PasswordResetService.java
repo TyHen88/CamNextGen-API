@@ -1,7 +1,7 @@
 package com.app.kh.camnextgen.modules.auth.service;
 
-public interface PasswordResetService {
-    void createResetToken(String email);
+import com.app.kh.camnextgen.modules.user.domain.User;
 
-    void resetPassword(String token, String newPassword);
+public interface PasswordResetService {
+    void sendReset(User user, String token);
 }

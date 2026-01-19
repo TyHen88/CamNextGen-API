@@ -1,55 +1,52 @@
 package com.app.kh.camnextgen.modules.auth.service;
 
 import com.app.kh.camnextgen.modules.auth.domain.RefreshToken;
-import com.app.kh.camnextgen.modules.auth.repo.RefreshTokenRepository;
+import com.app.kh.camnextgen.modules.auth.repository.RefreshTokenRepository;
 import com.app.kh.camnextgen.modules.user.domain.User;
 import com.app.kh.camnextgen.shared.config.JwtProperties;
-import com.app.kh.camnextgen.shared.exception.BusinessException;
+import com.app.kh.camnextgen.shared.security.JwtTokenProvider;
 import java.time.Instant;
-import java.util.UUID;
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class TokenServiceImpl implements TokenService {
-
     private final RefreshTokenRepository refreshTokenRepository;
+    private final JwtTokenProvider tokenProvider;
     private final JwtProperties jwtProperties;
 
-    public TokenServiceImpl(RefreshTokenRepository refreshTokenRepository, JwtProperties jwtProperties) {
+    public TokenServiceImpl(RefreshTokenRepository refreshTokenRepository,
+                            JwtTokenProvider tokenProvider,
+                            JwtProperties jwtProperties) {
         this.refreshTokenRepository = refreshTokenRepository;
+        this.tokenProvider = tokenProvider;
         this.jwtProperties = jwtProperties;
     }
 
     @Override
-    @Transactional
+    public String createAccessToken(User user) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("email", user.getEmail());
+        claims.put("status", user.getStatus().name());
+        return tokenProvider.generateAccessToken(user.getId(), user.getEmail(), claims);
+    }
+
+    @Override
     public RefreshToken createRefreshToken(User user) {
-        RefreshToken token = new RefreshToken();
-        token.setUser(user);
-        token.setToken(UUID.randomUUID().toString());
-        token.setCreatedAt(Instant.now());
-        token.setExpiresAt(Instant.now().plus(jwtProperties.getRefreshTokenTtl()));
-        return refreshTokenRepository.save(token);
+        String token = tokenProvider.generateRefreshToken(user.getId());
+        RefreshToken refreshToken = new RefreshToken();
+        refreshToken.setToken(token);
+        refreshToken.setUser(user);
+        refreshToken.setCreatedAt(Instant.now());
+        refreshToken.setExpiresAt(Instant.now().plus(jwtProperties.getRefreshTokenTtl()));
+        return refreshTokenRepository.save(refreshToken);
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public RefreshToken validateRefreshToken(String tokenValue) {
-        RefreshToken token = refreshTokenRepository.findByToken(tokenValue)
-                .orElseThrow(() -> new BusinessException("INVALID_TOKEN", "Invalid refresh token"));
-        if (token.getRevokedAt() != null) {
-            throw new BusinessException("TOKEN_REVOKED", "Refresh token revoked");
-        }
-        if (token.getExpiresAt().isBefore(Instant.now())) {
-            throw new BusinessException("TOKEN_EXPIRED", "Refresh token expired");
-        }
-        return token;
-    }
-
-    @Override
-    @Transactional
-    public void revokeToken(RefreshToken token) {
-        token.setRevokedAt(Instant.now());
-        refreshTokenRepository.save(token);
+    public RefreshToken rotateRefreshToken(RefreshToken existingToken) {
+        existingToken.setRevokedAt(Instant.now());
+        refreshTokenRepository.save(existingToken);
+        return createRefreshToken(existingToken.getUser());
     }
 }

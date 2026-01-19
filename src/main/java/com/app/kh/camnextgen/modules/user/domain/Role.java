@@ -9,31 +9,70 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "roles")
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Role {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @EqualsAndHashCode.Include
     private Long id;
 
-    @Column(nullable = false, unique = true, length = 60)
+    @Column(nullable = false, unique = true)
     private String code;
 
-    @Column(nullable = false, length = 120)
+    @Column(nullable = false)
     private String name;
 
     @OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
-    @ToString.Exclude
-    private Set<RolePermission> rolePermissions = new HashSet<>();
+    private Set<RolePermission> permissions = new HashSet<>();
+
+    @OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
+    private Set<UserRole> users = new HashSet<>();
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Set<RolePermission> getPermissions() {
+        return permissions;
+    }
+
+    public Set<UserRole> getUsers() {
+        return users;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Role role = (Role) o;
+        return id != null && Objects.equals(id, role.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return 31;
+    }
 }

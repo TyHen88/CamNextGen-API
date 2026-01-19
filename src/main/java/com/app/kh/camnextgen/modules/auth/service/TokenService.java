@@ -4,9 +4,7 @@ import com.app.kh.camnextgen.modules.auth.domain.RefreshToken;
 import com.app.kh.camnextgen.modules.user.domain.User;
 
 public interface TokenService {
+    String createAccessToken(User user);
     RefreshToken createRefreshToken(User user);
-
-    RefreshToken validateRefreshToken(String token);
-
-    void revokeToken(RefreshToken token);
+    RefreshToken rotateRefreshToken(RefreshToken existingToken);
 }

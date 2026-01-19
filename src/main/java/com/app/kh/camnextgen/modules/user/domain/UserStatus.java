@@ -1,7 +1,7 @@
 package com.app.kh.camnextgen.modules.user.domain;
 
 public enum UserStatus {
-    PENDING_VERIFICATION,
+    PENDING,
     ACTIVE,
-    DISABLED
+    SUSPENDED
 }

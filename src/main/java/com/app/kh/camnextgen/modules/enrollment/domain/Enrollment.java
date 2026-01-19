@@ -14,37 +14,80 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.time.Instant;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import java.util.Objects;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "enrollments")
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Enrollment {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @EqualsAndHashCode.Include
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    @ToString.Exclude
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id", nullable = false)
-    @ToString.Exclude
     private Course course;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false)
     private EnrollmentStatus status;
 
     @Column(nullable = false)
     private Instant enrolledAt;
+
+    public Long getId() {
+        return id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
+
+    public EnrollmentStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(EnrollmentStatus status) {
+        this.status = status;
+    }
+
+    public Instant getEnrolledAt() {
+        return enrolledAt;
+    }
+
+    public void setEnrolledAt(Instant enrolledAt) {
+        this.enrolledAt = enrolledAt;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Enrollment that = (Enrollment) o;
+        return id != null && Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return 31;
+    }
 }

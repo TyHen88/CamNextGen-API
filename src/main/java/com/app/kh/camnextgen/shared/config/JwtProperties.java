@@ -2,12 +2,9 @@ package com.app.kh.camnextgen.shared.config;
 
 import java.time.Duration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
-@Component
 @ConfigurationProperties(prefix = "security.jwt")
 public class JwtProperties {
-
     private String issuer;
     private Duration accessTokenTtl;
     private Duration refreshTokenTtl;

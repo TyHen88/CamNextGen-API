@@ -22,7 +22,7 @@ public class RequestResponseLoggingFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } finally {
             long durationMs = System.currentTimeMillis() - start;
-            String requestId = MDC.get(CorrelationIdFilter.MDC_KEY);
+            String requestId = MDC.get(CorrelationIdFilter.HEADER_NAME);
             logger.info("request method={} path={} status={} durationMs={} requestId={}",
                     request.getMethod(),
                     request.getRequestURI(),

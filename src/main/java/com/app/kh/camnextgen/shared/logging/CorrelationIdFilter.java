@@ -10,23 +10,22 @@ import org.slf4j.MDC;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 public class CorrelationIdFilter extends OncePerRequestFilter {
-
     public static final String HEADER_NAME = "X-Request-Id";
-    public static final String MDC_KEY = "correlationId";
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
+        throws ServletException, IOException {
         String correlationId = request.getHeader(HEADER_NAME);
         if (correlationId == null || correlationId.isBlank()) {
             correlationId = UUID.randomUUID().toString();
         }
-        MDC.put(MDC_KEY, correlationId);
+        MDC.put("correlationId", correlationId);
+        request.setAttribute("correlationId", correlationId);
         response.setHeader(HEADER_NAME, correlationId);
         try {
             filterChain.doFilter(request, response);
         } finally {
-            MDC.remove(MDC_KEY);
+            MDC.remove("correlationId");
         }
     }
 }
