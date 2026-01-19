@@ -1,0 +1,10 @@
+create index ix_user_roles_user_id on user_roles(user_id);
+create index ix_user_roles_role_id on user_roles(role_id);
+create index ix_role_permissions_role_id on role_permissions(role_id);
+create index ix_role_permissions_permission_id on role_permissions(permission_id);
+create index ix_enrollments_user_id on enrollments(user_id);
+create index ix_enrollments_course_id on enrollments(course_id);
+create index ix_refresh_tokens_user_id on refresh_tokens(user_id);
+create index ix_refresh_tokens_expires_at on refresh_tokens(expires_at);
+create index ix_verification_tokens_user_id on verification_tokens(user_id);
+create index ix_password_reset_tokens_user_id on password_reset_tokens(user_id);

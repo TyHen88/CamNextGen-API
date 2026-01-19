@@ -1,0 +1,36 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: CamNextGen
+  datasource:
+    url: jdbc:postgresql://localhost:5432/camnextgen
+    username: camnextgen
+    password: camnextgen
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: false
+        jdbc:
+          batch_size: 50
+        order_inserts: true
+        order_updates: true
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+security:
+  jwt:
+    issuer: camnextgen
+    access-token-ttl: 900s
+    refresh-token-ttl: 30d
+    secret: ${JWT_SECRET:change-me}
+
+logging:
+  level:
+    root: INFO
+    com.app.kh.camnextgen: DEBUG
