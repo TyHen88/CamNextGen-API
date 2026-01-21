@@ -1,13 +1,13 @@
 server:
-  port: 8080
+  port: 8181
 
 spring:
   application:
     name: CamNextGen
   datasource:
     url: jdbc:postgresql://localhost:5432/camnextgen_db
-    username: mac_pg
-    password: 12345678
+    username: postgres
+    password: psql@ty8080
   jpa:
     open-in-view: false
     hibernate:
@@ -32,7 +32,10 @@ security:
   auth:
     verification-token-ttl: 24h
     password-reset-token-ttl: 30m
-
+camgennext:
+  email:
+    from: ${EMAIL_FROM:noreply@wecambodia.com}
+    base-url: ${EMAIL_BASE_URL:http://localhost:3001/en}
 logging:
   level:
     root: INFO

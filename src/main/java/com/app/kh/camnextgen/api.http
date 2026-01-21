@@ -1,0 +1,39 @@
+POST http://localhost:8181/api/v1/auth/register
+Accept: application/json
+Content-Type: application/json
+
+{
+  "email": "admin@gmail.com",
+  "password": "Qwer1234",
+  "fullName": "Admin"
+
+}
+
+###
+
+POST http://localhost:8181/api/v1/auth/login
+Accept: application/json
+Content-Type: application/json
+
+{
+  "email": "admin@gmail.com",
+  "password": "Qwer1234"
+
+}
+
+
+###
+POST http://localhost:8181/api/v1/auth/verify
+Accept: application/json
+Content-Type: application/json
+
+{
+  "token": "bb3a2af9-f203-4b29-b9d6-d1702f154f0e"
+}
+
+###
+GET http://localhost:8181/api/v1/users/me
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaXNzIjoiY2FtbmV4dGdlbiIsImlhdCI6MTc2ODk4MTg3OSwiZXhwIjoxNzY4OTgyNzc5LCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInN0YXR1cyI6IkFDVElWRSJ9.-o4T_DfYbEGdjJomKZ3lZ5W4UZmwerplRXl5is2MN_E
+Content-Type: application/json
+###

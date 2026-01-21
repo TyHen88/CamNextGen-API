@@ -4,4 +4,6 @@ import com.app.kh.camnextgen.modules.user.domain.User;
 
 public interface EmailVerificationService {
     void sendVerification(User user, String token);
+
+    void sendEmailVerificationEmail(String email, String verificationToken, String firstName);
 }

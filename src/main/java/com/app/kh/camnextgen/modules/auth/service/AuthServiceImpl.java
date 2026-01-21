@@ -27,10 +27,13 @@ import com.app.kh.camnextgen.shared.exception.BusinessException;
 import com.app.kh.camnextgen.shared.exception.NotFoundException;
 import java.time.Instant;
 import java.util.UUID;
+
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
@@ -100,8 +103,11 @@ public class AuthServiceImpl implements AuthService {
         token.setCreatedAt(Instant.now());
         token.setExpiresAt(Instant.now().plus(authProperties.getVerificationTokenTtl()));
         verificationTokenRepository.save(token);
-
-        emailVerificationService.sendVerification(user, token.getToken());
+        try {
+            emailVerificationService.sendVerification(user, token.getToken());
+        }catch (Exception e){
+            log.warn("Failed to send verification email to {}: {}", token.getUser().getEmail(), e.getMessage());
+        }
         auditLogService.logEvent("USER_REGISTER", user.getId(), "{\"email\":\"" + user.getEmail() + "\"}");
 
         return new AuthResponse(null, null, UserMapper.toUserResponse(user));
