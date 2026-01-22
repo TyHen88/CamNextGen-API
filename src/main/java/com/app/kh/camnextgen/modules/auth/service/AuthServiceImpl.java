@@ -25,6 +25,7 @@ import com.app.kh.camnextgen.modules.user.service.UserMapper;
 import com.app.kh.camnextgen.shared.config.AuthProperties;
 import com.app.kh.camnextgen.shared.exception.BusinessException;
 import com.app.kh.camnextgen.shared.exception.NotFoundException;
+import com.app.kh.camnextgen.shared.security.SecurityUtils;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -190,5 +191,18 @@ public class AuthServiceImpl implements AuthService {
         String accessToken = tokenService.createAccessToken(user);
         auditLogService.logEvent("TOKEN_REFRESH", user.getId(), null);
         return new AuthResponse(accessToken, rotated.getToken(), UserMapper.toUserResponse(user));
+    }
+
+    @Override
+    @Transactional
+    public void logout() {
+        Long userIdLong = SecurityUtils.getCurrentUserId();
+        if (userIdLong == null) {
+            throw new BusinessException("UNAUTHORIZED", "User not authenticated");
+        }
+        String userId = String.valueOf(userIdLong);
+        refreshTokenRepository.revokeAllByUserId(userId);
+        auditLogService.logEvent(userId, null, "USER_LOGOUT");
+        log.info("User logged out successfully: {}", userId);
     }
 }

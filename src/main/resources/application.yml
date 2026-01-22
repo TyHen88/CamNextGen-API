@@ -22,11 +22,25 @@ spring:
   flyway:
     enabled: true
     locations: classpath:db/migration
+  # Email configuration
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: hentyna11@gmail.com
+    password: buikaqqkuuabnjqd
+    properties:
+      mail:
+        debug: true
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
 
 security:
   jwt:
     issuer: camnextgen
-    access-token-ttl: 900s
+    access-token-ttl: 7d
     refresh-token-ttl: 30d
     secret: ${JWT_SECRET:my-super-secret-jwt-key-for-development-only-32-chars}
   auth:
@@ -35,10 +49,13 @@ security:
 camgennext:
   email:
     from: ${EMAIL_FROM:noreply@wecambodia.com}
-    base-url: ${EMAIL_BASE_URL:http://localhost:3001/en}
+    from-name: ${EMAIL_FROM_NAME:CamNextGen}
+    base-url: ${EMAIL_BASE_URL:http://localhost:3006}
 logging:
   level:
     root: INFO
     com.app.kh.camnextgen: DEBUG
+    org.springframework.mail: DEBUG
+    org.eclipse.angus.mail: DEBUG
   pattern:
     level: "%5p [corrId:%X{correlationId}]"

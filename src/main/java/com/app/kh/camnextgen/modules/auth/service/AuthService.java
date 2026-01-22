@@ -15,4 +15,5 @@ public interface AuthService {
     void forgotPassword(ForgotPasswordRequest request);
     void resetPassword(ResetPasswordRequest request);
     AuthResponse refreshToken(RefreshTokenRequest request);
+    void logout();
 }

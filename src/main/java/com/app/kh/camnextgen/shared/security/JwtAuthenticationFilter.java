@@ -1,6 +1,7 @@
 package com.app.kh.camnextgen.shared.security;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,13 +31,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String token = header.substring(7);
             try {
                 Claims claims = tokenProvider.parseClaims(token);
-                Long userId = Long.parseLong(claims.getSubject());
-                if (SecurityContextHolder.getContext().getAuthentication() == null) {
-                    CustomUserDetails userDetails = (CustomUserDetails) userDetailsService.loadUserById(userId);
-                    UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                authenticateFromClaims(claims, request);
+            } catch (ExpiredJwtException e) {
+                if (isLogoutRequest(request)) {
+                    authenticateFromClaims(e.getClaims(), request);
+                } else {
+                    log.warn("JWT token validation failed: {}", e.getMessage());
                 }
             } catch (Exception e) {
                 log.warn("JWT token validation failed: {}", e.getMessage());
@@ -44,5 +44,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
         }
         filterChain.doFilter(request, response);
+    }
+
+    private void authenticateFromClaims(Claims claims, HttpServletRequest request) {
+        Long userId = Long.parseLong(claims.getSubject());
+        if (SecurityContextHolder.getContext().getAuthentication() == null) {
+            CustomUserDetails userDetails = (CustomUserDetails) userDetailsService.loadUserById(userId);
+            UsernamePasswordAuthenticationToken authentication =
+                new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
+    }
+
+    private boolean isLogoutRequest(HttpServletRequest request) {
+        String uri = request.getRequestURI();
+        return uri != null && uri.endsWith("/api/v1/auth/logout");
     }
 }

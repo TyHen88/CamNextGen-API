@@ -9,14 +9,14 @@ import com.app.kh.camnextgen.modules.auth.dto.ResetPasswordRequest;
 import com.app.kh.camnextgen.modules.auth.dto.VerifyEmailRequest;
 import com.app.kh.camnextgen.modules.auth.service.AuthService;
 import com.app.kh.camnextgen.shared.response.ApiResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -64,5 +64,12 @@ public class AuthController {
     private String requestId(HttpServletRequest request) {
         Object value = request.getAttribute("correlationId");
         return value == null ? null : value.toString();
+    }
+
+    @PostMapping("/logout")
+    @SecurityRequirement(name = "bearerAuth")
+    public ApiResponse<Void> logout(HttpServletRequest http) {
+        authService.logout();
+        return ApiResponse.ok(null, requestId(http));
     }
 }
