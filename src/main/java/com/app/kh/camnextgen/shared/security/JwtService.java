@@ -1,16 +1,18 @@
 package com.app.kh.camnextgen.shared.security;
 
-import com.app.kh.camnextgen.shared.config.JwtProperties;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.time.Instant;
 import java.util.Date;
-import java.util.Set;
+
 import org.springframework.stereotype.Service;
+
+import com.app.kh.camnextgen.shared.config.JwtProperties;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 
 @Service
 public class JwtService {

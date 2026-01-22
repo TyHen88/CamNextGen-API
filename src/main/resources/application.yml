@@ -5,9 +5,18 @@ spring:
   application:
     name: CamNextGen
   datasource:
-    url: jdbc:postgresql://localhost:5432/camnextgen_db
-    username: postgres
-    password: psql@ty8080
+    url: jdbc:postgresql://localhost:5432/db_course
+    # username: postgres #windows
+    # password: psql@ty8080
+    username: mac_pg #mac
+    password: 12345678
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      idle-timeout: 30000
+      max-lifetime: 600000
+      connection-timeout: 20000
   jpa:
     open-in-view: false
     hibernate:
@@ -48,7 +57,7 @@ security:
     password-reset-token-ttl: 30m
 camgennext:
   email:
-    from: ${EMAIL_FROM:noreply@wecambodia.com}
+    from: ${EMAIL_FROM:hentyna11@gmail.com}
     from-name: ${EMAIL_FROM_NAME:CamNextGen}
     base-url: ${EMAIL_BASE_URL:http://localhost:3006}
 logging:
