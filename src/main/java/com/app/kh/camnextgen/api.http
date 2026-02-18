@@ -37,3 +37,18 @@ Accept: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaXNzIjoiY2FtbmV4dGdlbiIsImlhdCI6MTc2ODk4MTg3OSwiZXhwIjoxNzY4OTgyNzc5LCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInN0YXR1cyI6IkFDVElWRSJ9.-o4T_DfYbEGdjJomKZ3lZ5W4UZmwerplRXl5is2MN_E
 Content-Type: application/json
 ###
+
+# User settings – replace Bearer token with a valid JWT from login
+POST http://localhost:8181/api/v1/user-settings
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer <your-jwt-token>
+
+{
+  "settings": {
+    "theme": "dark",
+    "notifications": true,
+    "language": "en"
+  }
+}
+###
