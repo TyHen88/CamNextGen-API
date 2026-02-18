@@ -5,11 +5,11 @@ spring:
   application:
     name: CamNextGen
   datasource:
-    url: jdbc:postgresql://localhost:5432/db_course
-    # username: postgres #windows
-    # password: psql@ty8080
-    username: mac_pg #mac
-    password: 12345678
+    url: jdbc:postgresql://localhost:5432/camnextgen_db
+    username: postgres #windows
+    password: psql@ty8080
+#    username: mac_pg #mac
+#    password: 12345678
     driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 10
@@ -21,9 +21,11 @@ spring:
     open-in-view: false
     hibernate:
       ddl-auto: validate
+      show-sql: true
     properties:
       hibernate:
         format_sql: true
+        use_sql_comments: true
         jdbc:
           batch_size: 50
         order_inserts: true
@@ -60,11 +62,35 @@ camgennext:
     from: ${EMAIL_FROM:hentyna11@gmail.com}
     from-name: ${EMAIL_FROM_NAME:CamNextGen}
     base-url: ${EMAIL_BASE_URL:http://localhost:3006}
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: alpha
+    tagsSorter: alpha
+    display-request-duration: true
+  show-actuator: true
+
 logging:
   level:
     root: INFO
     com.app.kh.camnextgen: DEBUG
-    org.springframework.mail: DEBUG
-    org.eclipse.angus.mail: DEBUG
-  pattern:
-    level: "%5p [corrId:%X{correlationId}]"
+    org.hibernate.SQL: DEBUG
+    org.hibernate.orm.jdbc.bind: TRACE
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    
+  file:
+    name: logs/app.log
+    logback:
+    rollingpolicy:
+      max-file-size: 10MB
+      max-history: 30
+      total-size-cap: 1GB
+
+ratelimit:
+  enabled: true
+  capacity: 10
+  refill-tokens: 10
+  refill-duration: 1m

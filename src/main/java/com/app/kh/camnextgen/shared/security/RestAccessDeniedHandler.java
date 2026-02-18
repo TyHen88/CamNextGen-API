@@ -1,6 +1,6 @@
 package com.app.kh.camnextgen.shared.security;
 
-import com.app.kh.camnextgen.shared.api.ErrorResponse;
+import com.app.kh.camnextgen.shared.response.ErrorResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,7 +19,7 @@ public class RestAccessDeniedHandler implements AccessDeniedHandler {
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException)
             throws IOException, ServletException {
-        ErrorResponse body = new ErrorResponse("FORBIDDEN", "Forbidden", null, Instant.now(), requestId());
+        ErrorResponse body = ErrorResponse.of("FORBIDDEN", "Forbidden", requestId());
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         objectMapper.writeValue(response.getOutputStream(), body);

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    
+    <springProperty scope="context" name="LOG_FILE" source="logging.file.name" defaultValue="logs/app.log"/>
+    <springProperty scope="context" name="MAX_FILE_SIZE" source="logging.logback.rollingpolicy.max-file-size" defaultValue="10MB"/>
+    <springProperty scope="context" name="MAX_HISTORY" source="logging.logback.rollingpolicy.max-history" defaultValue="30"/>
+    <springProperty scope="context" name="TOTAL_SIZE_CAP" source="logging.logback.rollingpolicy.total-size-cap" defaultValue="1GB"/>
+
+    <property name="CONSOLE_LOG_PATTERN" value="%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p) %clr([corrId:%X{correlationId}]){yellow} %clr(---){faint} %clr([%thread]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+            <charset>utf8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_FILE}</file>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %5p [corrId:%X{correlationId}] --- [%thread] %-40.40logger{39} : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}</pattern>
+            <charset>utf8</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>logs/archived/app.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>${MAX_FILE_SIZE}</maxFileSize>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+            <totalSizeCap>${TOTAL_SIZE_CAP}</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+    </root>
+
+    <!-- Spring Boot handles com.app.kh.camnextgen level from application.yml -->
+</configuration>

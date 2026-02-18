@@ -2,6 +2,8 @@ package com.app.kh.camnextgen.shared.config;
 
 import com.app.kh.camnextgen.shared.logging.CorrelationIdFilter;
 import com.app.kh.camnextgen.shared.logging.RequestLoggingFilter;
+import com.app.kh.camnextgen.shared.ratelimit.RateLimitFilter;
+import com.app.kh.camnextgen.shared.ratelimit.RateLimitProperties;
 import com.app.kh.camnextgen.shared.security.CustomUserDetailsService;
 import com.app.kh.camnextgen.shared.security.JwtAuthenticationFilter;
 import com.app.kh.camnextgen.shared.security.JwtTokenProvider;
@@ -22,25 +24,34 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableMethodSecurity
-@EnableConfigurationProperties({JwtProperties.class, AuthProperties.class})
+@EnableConfigurationProperties({JwtProperties.class, AuthProperties.class, RateLimitProperties.class})
 public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http,
                                                    JwtTokenProvider tokenProvider,
-                                                   CustomUserDetailsService userDetailsService) throws Exception {
+                                                   CustomUserDetailsService userDetailsService,
+                                                   RateLimitFilter rateLimitFilter) throws Exception {
         JwtAuthenticationFilter jwtFilter = new JwtAuthenticationFilter(tokenProvider, userDetailsService);
 
         http
             .csrf(csrf -> csrf.disable()).cors(cors -> {})
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/v1/auth/**", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
+                .requestMatchers(
+                    "/api/v1/auth/**",
+                    "/v3/api-docs/**",
+                    "/swagger-ui/**",
+                    "/swagger-ui.html",
+                    "/swagger-resources/**",
+                    "/webjars/**"
+                ).permitAll()
                 .anyRequest().authenticated()
             )
             .authenticationProvider(authenticationProvider(userDetailsService))
             .addFilterBefore(new CorrelationIdFilter(), UsernamePasswordAuthenticationFilter.class)
-            .addFilterAfter(new RequestLoggingFilter(), CorrelationIdFilter.class)
+            .addFilterAfter(rateLimitFilter, CorrelationIdFilter.class)
+            .addFilterAfter(new RequestLoggingFilter(), RateLimitFilter.class)
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

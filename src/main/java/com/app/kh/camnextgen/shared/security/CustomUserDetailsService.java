@@ -1,8 +1,8 @@
 package com.app.kh.camnextgen.shared.security;
 
-import com.app.kh.camnextgen.modules.user.domain.User;
-import com.app.kh.camnextgen.modules.user.domain.UserRole;
-import com.app.kh.camnextgen.modules.user.repository.UserRepository;
+import com.app.kh.camnextgen.user.domain.User;
+import com.app.kh.camnextgen.user.domain.UserRole;
+import com.app.kh.camnextgen.user.repository.UserRepository;
 import java.util.HashSet;
 import java.util.Set;
 import org.springframework.security.core.GrantedAuthority;

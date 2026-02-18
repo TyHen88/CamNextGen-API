@@ -1,6 +1,6 @@
 package com.app.kh.camnextgen.shared.security;
 
-import com.app.kh.camnextgen.shared.api.ErrorResponse;
+import com.app.kh.camnextgen.shared.response.ErrorResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,7 +19,7 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)
             throws IOException, ServletException {
-        ErrorResponse body = new ErrorResponse("UNAUTHORIZED", "Unauthorized", null, Instant.now(), requestId());
+        ErrorResponse body = ErrorResponse.of("UNAUTHORIZED", "Unauthorized", requestId());
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         objectMapper.writeValue(response.getOutputStream(), body);
