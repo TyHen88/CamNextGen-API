@@ -47,6 +47,14 @@ spring:
           starttls:
             enable: true
             required: true
+  # rabbitmq configuration
+  rabbitmq:
+    host: localhost
+    port: 5672
+    stream:
+      username: guest
+      password: quest
+
 
 security:
   jwt:
@@ -94,3 +102,6 @@ ratelimit:
   capacity: 10
   refill-tokens: 10
   refill-duration: 1m
+
+
+

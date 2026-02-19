@@ -55,9 +55,13 @@ dependencies {
     // Dev
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
+    //AMQP
+    implementation 'org.springframework.boot:spring-boot-starter-amqp'
+
     // Tests
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testImplementation 'org.springframework.amqp:spring-rabbit-test'
 }
 
 tasks.named('test') {

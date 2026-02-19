@@ -1,4 +1,4 @@
-package com.app.kh.camnextgen.modules.setting.dto;
+package com.app.kh.camnextgen.setting.dto;
 
 import jakarta.validation.constraints.NotNull;
 import java.util.Map;

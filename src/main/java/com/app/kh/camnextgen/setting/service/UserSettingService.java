@@ -1,7 +1,7 @@
-package com.app.kh.camnextgen.modules.setting.service;
+package com.app.kh.camnextgen.setting.service;
 
-import com.app.kh.camnextgen.modules.setting.dto.UpsertSettingRequest;
-import com.app.kh.camnextgen.modules.setting.dto.UserSettingResponse;
+import com.app.kh.camnextgen.setting.dto.UpsertSettingRequest;
+import com.app.kh.camnextgen.setting.dto.UserSettingResponse;
 
 public interface UserSettingService {
 

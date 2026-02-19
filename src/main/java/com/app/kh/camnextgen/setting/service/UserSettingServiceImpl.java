@@ -1,11 +1,11 @@
-package com.app.kh.camnextgen.modules.setting.service;
+package com.app.kh.camnextgen.setting.service;
 
-import com.app.kh.camnextgen.modules.setting.domain.UserSetting;
-import com.app.kh.camnextgen.modules.setting.dto.UpsertSettingRequest;
-import com.app.kh.camnextgen.modules.setting.dto.UserSettingResponse;
-import com.app.kh.camnextgen.modules.setting.repository.UserSettingRepository;
-import com.app.kh.camnextgen.modules.user.domain.User;
-import com.app.kh.camnextgen.modules.user.repository.UserRepository;
+import com.app.kh.camnextgen.setting.domain.UserSetting;
+import com.app.kh.camnextgen.setting.dto.UpsertSettingRequest;
+import com.app.kh.camnextgen.setting.dto.UserSettingResponse;
+import com.app.kh.camnextgen.setting.repository.UserSettingRepository;
+import com.app.kh.camnextgen.user.domain.User;
+import com.app.kh.camnextgen.user.repository.UserRepository;
 import com.app.kh.camnextgen.shared.exception.NotFoundException;
 import com.app.kh.camnextgen.shared.security.SecurityUtils;
 import com.fasterxml.jackson.core.type.TypeReference;

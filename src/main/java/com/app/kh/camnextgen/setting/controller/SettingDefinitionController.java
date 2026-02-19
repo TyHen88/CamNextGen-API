@@ -1,9 +1,9 @@
-package com.app.kh.camnextgen.modules.setting.controller;
+package com.app.kh.camnextgen.setting.controller;
 
-import com.app.kh.camnextgen.modules.setting.dto.CreateSettingDefinitionRequest;
-import com.app.kh.camnextgen.modules.setting.dto.SettingDefinitionResponse;
-import com.app.kh.camnextgen.modules.setting.dto.UpdateSettingDefinitionRequest;
-import com.app.kh.camnextgen.modules.setting.service.SettingDefinitionService;
+import com.app.kh.camnextgen.setting.dto.CreateSettingDefinitionRequest;
+import com.app.kh.camnextgen.setting.dto.SettingDefinitionResponse;
+import com.app.kh.camnextgen.setting.dto.UpdateSettingDefinitionRequest;
+import com.app.kh.camnextgen.setting.service.SettingDefinitionService;
 import com.app.kh.camnextgen.shared.response.ApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;

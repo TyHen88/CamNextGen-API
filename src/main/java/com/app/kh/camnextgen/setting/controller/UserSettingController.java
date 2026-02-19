@@ -1,8 +1,8 @@
-package com.app.kh.camnextgen.modules.setting.controller;
+package com.app.kh.camnextgen.setting.controller;
 
-import com.app.kh.camnextgen.modules.setting.dto.UpsertSettingRequest;
-import com.app.kh.camnextgen.modules.setting.dto.UserSettingResponse;
-import com.app.kh.camnextgen.modules.setting.service.UserSettingService;
+import com.app.kh.camnextgen.setting.dto.UpsertSettingRequest;
+import com.app.kh.camnextgen.setting.dto.UserSettingResponse;
+import com.app.kh.camnextgen.setting.service.UserSettingService;
 import com.app.kh.camnextgen.shared.response.ApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
