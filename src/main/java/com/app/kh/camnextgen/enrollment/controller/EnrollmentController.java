@@ -7,6 +7,7 @@ import com.app.kh.camnextgen.shared.exception.BusinessException;
 import com.app.kh.camnextgen.shared.response.ApiResponse;
 import com.app.kh.camnextgen.shared.response.PageResponse;
 import com.app.kh.camnextgen.shared.security.SecurityUtils;
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/enrollments")
+@Hidden
 public class EnrollmentController {
     private final EnrollmentService enrollmentService;
 

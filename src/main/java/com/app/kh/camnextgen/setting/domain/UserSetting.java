@@ -1,7 +1,7 @@
-package com.app.kh.camnextgen.modules.setting.domain;
+package com.app.kh.camnextgen.setting.domain;
 
-import com.app.kh.camnextgen.modules.user.domain.User;
-import com.app.kh.camnextgen.shared.util.BaseEntity;
+import com.app.kh.camnextgen.shared.infra.jpa.BaseEntity;
+import com.app.kh.camnextgen.user.domain.User;
 import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.persistence.*;
 import org.hibernate.annotations.JdbcTypeCode;

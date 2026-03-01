@@ -1,11 +1,11 @@
 package com.app.kh.camnextgen.auth.dto;
 
+import com.app.kh.camnextgen.auth.domain.OtpPurpose;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.NotNull;
 
-public record ResetPasswordRequest(
+public record SendOtpRequest(
     @Email @NotBlank String email,
-    @NotBlank String otp,
-    @NotBlank @Size(min = 6, max = 120) String newPassword
+    @NotNull OtpPurpose purpose
 ) {}

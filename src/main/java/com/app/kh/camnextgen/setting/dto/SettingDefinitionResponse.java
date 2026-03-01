@@ -1,4 +1,4 @@
-package com.app.kh.camnextgen.modules.setting.dto;
+package com.app.kh.camnextgen.setting.dto;
 
 import java.time.Instant;
 

@@ -1,8 +1,8 @@
-package com.app.kh.camnextgen.modules.setting.service;
+package com.app.kh.camnextgen.setting.service;
 
-import com.app.kh.camnextgen.modules.setting.dto.CreateSettingDefinitionRequest;
-import com.app.kh.camnextgen.modules.setting.dto.SettingDefinitionResponse;
-import com.app.kh.camnextgen.modules.setting.dto.UpdateSettingDefinitionRequest;
+import com.app.kh.camnextgen.setting.dto.CreateSettingDefinitionRequest;
+import com.app.kh.camnextgen.setting.dto.SettingDefinitionResponse;
+import com.app.kh.camnextgen.setting.dto.UpdateSettingDefinitionRequest;
 import java.util.List;
 
 public interface SettingDefinitionService {

@@ -27,7 +27,7 @@ public class EmailService {
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
             // Set from address with proper InternetAddress handling
-            helper.setFrom(new InternetAddress(fromEmail, "WeUMS"));
+            helper.setFrom(new InternetAddress(fromEmail, "CamNextGen"));
             helper.setTo(to);
             helper.setSubject(subject);
             helper.setText(htmlContent, true); // true indicates HTML content

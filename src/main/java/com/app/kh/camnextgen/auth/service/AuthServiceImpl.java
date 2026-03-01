@@ -1,7 +1,7 @@
 package com.app.kh.camnextgen.auth.service;
 
 import com.app.kh.camnextgen.shared.infra.audit.service.AuditLogService;
-import com.app.kh.camnextgen.auth.domain.PasswordResetToken;
+import com.app.kh.camnextgen.auth.domain.OtpPurpose;
 import com.app.kh.camnextgen.auth.domain.RefreshToken;
 import com.app.kh.camnextgen.auth.domain.VerificationToken;
 import com.app.kh.camnextgen.auth.dto.AuthResponse;
@@ -10,8 +10,9 @@ import com.app.kh.camnextgen.auth.dto.LoginRequest;
 import com.app.kh.camnextgen.auth.dto.RefreshTokenRequest;
 import com.app.kh.camnextgen.auth.dto.RegisterRequest;
 import com.app.kh.camnextgen.auth.dto.ResetPasswordRequest;
+import com.app.kh.camnextgen.auth.dto.SendOtpRequest;
 import com.app.kh.camnextgen.auth.dto.VerifyEmailRequest;
-import com.app.kh.camnextgen.auth.repository.PasswordResetTokenRepository;
+import com.app.kh.camnextgen.auth.dto.VerifyOtpRequest;
 import com.app.kh.camnextgen.auth.repository.RefreshTokenRepository;
 import com.app.kh.camnextgen.auth.repository.VerificationTokenRepository;
 import com.app.kh.camnextgen.user.domain.Role;
@@ -21,13 +22,10 @@ import com.app.kh.camnextgen.user.domain.UserStatus;
 import com.app.kh.camnextgen.user.repository.RoleRepository;
 import com.app.kh.camnextgen.user.repository.UserRepository;
 import com.app.kh.camnextgen.user.repository.UserRoleRepository;
-import com.app.kh.camnextgen.user.service.UserMapper;
-import com.app.kh.camnextgen.shared.config.AuthProperties;
 import com.app.kh.camnextgen.shared.exception.BusinessException;
 import com.app.kh.camnextgen.shared.exception.NotFoundException;
 import com.app.kh.camnextgen.shared.security.SecurityUtils;
 import java.time.Instant;
-import java.util.UUID;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -41,39 +39,30 @@ public class AuthServiceImpl implements AuthService {
     private final RoleRepository roleRepository;
     private final UserRoleRepository userRoleRepository;
     private final VerificationTokenRepository verificationTokenRepository;
-    private final PasswordResetTokenRepository passwordResetTokenRepository;
     private final RefreshTokenRepository refreshTokenRepository;
     private final TokenService tokenService;
-    private final EmailVerificationService emailVerificationService;
-    private final PasswordResetService passwordResetService;
     private final PasswordEncoder passwordEncoder;
-    private final AuthProperties authProperties;
     private final AuditLogService auditLogService;
+    private final OtpService otpService;
 
     public AuthServiceImpl(UserRepository userRepository,
                            RoleRepository roleRepository,
                            UserRoleRepository userRoleRepository,
                            VerificationTokenRepository verificationTokenRepository,
-                           PasswordResetTokenRepository passwordResetTokenRepository,
                            RefreshTokenRepository refreshTokenRepository,
                            TokenService tokenService,
-                           EmailVerificationService emailVerificationService,
-                           PasswordResetService passwordResetService,
                            PasswordEncoder passwordEncoder,
-                           AuthProperties authProperties,
-                           AuditLogService auditLogService) {
+                           AuditLogService auditLogService,
+                           OtpService otpService) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.userRoleRepository = userRoleRepository;
         this.verificationTokenRepository = verificationTokenRepository;
-        this.passwordResetTokenRepository = passwordResetTokenRepository;
         this.refreshTokenRepository = refreshTokenRepository;
         this.tokenService = tokenService;
-        this.emailVerificationService = emailVerificationService;
-        this.passwordResetService = passwordResetService;
         this.passwordEncoder = passwordEncoder;
-        this.authProperties = authProperties;
         this.auditLogService = auditLogService;
+        this.otpService = otpService;
     }
 
     @Override
@@ -98,17 +87,7 @@ public class AuthServiceImpl implements AuthService {
         userRole.setAssignedAt(Instant.now());
         userRoleRepository.save(userRole);
 
-        VerificationToken token = new VerificationToken();
-        token.setToken(UUID.randomUUID().toString());
-        token.setUser(user);
-        token.setCreatedAt(Instant.now());
-        token.setExpiresAt(Instant.now().plus(authProperties.getVerificationTokenTtl()));
-        verificationTokenRepository.save(token);
-        try {
-            emailVerificationService.sendVerification(user, token.getToken());
-        }catch (Exception e){
-            log.warn("Failed to send verification email to {}: {}", token.getUser().getEmail(), e.getMessage());
-        }
+        otpService.sendOtp(user.getEmail(), OtpPurpose.EMAIL_VERIFICATION);
         auditLogService.logEvent("USER_REGISTER", user.getId(), "{\"email\":\"" + user.getEmail() + "\"}");
 
         return new AuthResponse(null, null);
@@ -152,13 +131,7 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     public void forgotPassword(ForgotPasswordRequest request) {
         userRepository.findByEmail(request.email().toLowerCase()).ifPresent(user -> {
-            PasswordResetToken token = new PasswordResetToken();
-            token.setToken(UUID.randomUUID().toString());
-            token.setUser(user);
-            token.setCreatedAt(Instant.now());
-            token.setExpiresAt(Instant.now().plus(authProperties.getPasswordResetTokenTtl()));
-            passwordResetTokenRepository.save(token);
-            passwordResetService.sendReset(user, token.getToken());
+            otpService.sendOtp(user.getEmail(), OtpPurpose.PASSWORD_RESET);
             auditLogService.logEvent("PASSWORD_RESET_REQUEST", user.getId(), null);
         });
     }
@@ -166,15 +139,12 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional
     public void resetPassword(ResetPasswordRequest request) {
-        PasswordResetToken token = passwordResetTokenRepository.findByToken(request.token())
-            .orElseThrow(() -> new BusinessException("INVALID_TOKEN", "Invalid reset token"));
-        if (token.getExpiresAt().isBefore(Instant.now())) {
-            throw new BusinessException("TOKEN_EXPIRED", "Reset token expired");
-        }
-        User user = token.getUser();
+        String email = request.email().trim().toLowerCase();
+        otpService.verifyOtp(email, request.otp(), OtpPurpose.PASSWORD_RESET);
+        User user = userRepository.findByEmail(email)
+            .orElseThrow(() -> new BusinessException("EMAIL_NOT_FOUND", "Email not found"));
         user.setPasswordHash(passwordEncoder.encode(request.newPassword()));
         userRepository.save(user);
-        passwordResetTokenRepository.delete(token);
         auditLogService.logEvent("PASSWORD_RESET", user.getId(), null);
     }
 
@@ -195,14 +165,25 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     @Transactional
+    public void sendOtp(SendOtpRequest request) {
+        otpService.sendOtp(request.email(), request.purpose());
+    }
+
+    @Override
+    @Transactional
+    public void verifyOtp(VerifyOtpRequest request) {
+        otpService.verifyOtp(request.email(), request.otp(), request.purpose());
+    }
+
+    @Override
+    @Transactional
     public void logout() {
-        Long userIdLong = SecurityUtils.getCurrentUserId();
-        if (userIdLong == null) {
+        Long userId = SecurityUtils.getCurrentUserId();
+        if (userId == null) {
             throw new BusinessException("UNAUTHORIZED", "User not authenticated");
         }
-        String userId = String.valueOf(userIdLong);
         refreshTokenRepository.revokeAllByUserId(userId);
-        auditLogService.logEvent(userId, null, "USER_LOGOUT");
+        auditLogService.logEvent("USER_LOGOUT", userId, null);
         log.info("User logged out successfully: {}", userId);
     }
 }

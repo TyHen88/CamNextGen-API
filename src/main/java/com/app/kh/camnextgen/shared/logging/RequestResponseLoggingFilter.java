@@ -22,7 +22,8 @@ public class RequestResponseLoggingFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } finally {
             long durationMs = System.currentTimeMillis() - start;
-            String requestId = MDC.get(CorrelationIdFilter.HEADER_NAME);
+            Object requestIdAttr = request.getAttribute("correlationId");
+            String requestId = requestIdAttr != null ? requestIdAttr.toString() : MDC.get("correlationId");
             logger.info("request method={} path={} status={} durationMs={} requestId={}",
                     request.getMethod(),
                     request.getRequestURI(),

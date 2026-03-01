@@ -6,7 +6,9 @@ import com.app.kh.camnextgen.auth.dto.LoginRequest;
 import com.app.kh.camnextgen.auth.dto.RefreshTokenRequest;
 import com.app.kh.camnextgen.auth.dto.RegisterRequest;
 import com.app.kh.camnextgen.auth.dto.ResetPasswordRequest;
+import com.app.kh.camnextgen.auth.dto.SendOtpRequest;
 import com.app.kh.camnextgen.auth.dto.VerifyEmailRequest;
+import com.app.kh.camnextgen.auth.dto.VerifyOtpRequest;
 
 public interface AuthService {
     AuthResponse register(RegisterRequest request);
@@ -15,5 +17,7 @@ public interface AuthService {
     void forgotPassword(ForgotPasswordRequest request);
     void resetPassword(ResetPasswordRequest request);
     AuthResponse refreshToken(RefreshTokenRequest request);
+    void sendOtp(SendOtpRequest request);
+    void verifyOtp(VerifyOtpRequest request);
     void logout();
 }

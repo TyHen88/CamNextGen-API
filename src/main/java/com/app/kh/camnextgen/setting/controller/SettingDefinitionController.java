@@ -1,14 +1,15 @@
-package com.app.kh.camnextgen.modules.setting.controller;
+package com.app.kh.camnextgen.setting.controller;
 
-import com.app.kh.camnextgen.modules.setting.dto.CreateSettingDefinitionRequest;
-import com.app.kh.camnextgen.modules.setting.dto.SettingDefinitionResponse;
-import com.app.kh.camnextgen.modules.setting.dto.UpdateSettingDefinitionRequest;
-import com.app.kh.camnextgen.modules.setting.service.SettingDefinitionService;
+import com.app.kh.camnextgen.setting.dto.CreateSettingDefinitionRequest;
+import com.app.kh.camnextgen.setting.dto.SettingDefinitionResponse;
+import com.app.kh.camnextgen.setting.dto.UpdateSettingDefinitionRequest;
+import com.app.kh.camnextgen.setting.service.SettingDefinitionService;
 import com.app.kh.camnextgen.shared.response.ApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +32,7 @@ public class SettingDefinitionController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('USER_WRITE')")
     @ResponseStatus(HttpStatus.CREATED)
     public ApiResponse<SettingDefinitionResponse> create(@Valid @RequestBody CreateSettingDefinitionRequest request,
             HttpServletRequest http) {
@@ -38,6 +40,7 @@ public class SettingDefinitionController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('USER_WRITE')")
     public ApiResponse<SettingDefinitionResponse> update(@PathVariable Long id,
             @Valid @RequestBody UpdateSettingDefinitionRequest request,
             HttpServletRequest http) {
@@ -45,27 +48,32 @@ public class SettingDefinitionController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('USER_READ')")
     public ApiResponse<SettingDefinitionResponse> getById(@PathVariable Long id, HttpServletRequest http) {
         return ApiResponse.ok(settingDefinitionService.getById(id), requestId(http));
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('USER_WRITE')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {
         settingDefinitionService.delete(id);
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('USER_READ')")
     public ApiResponse<List<SettingDefinitionResponse>> list(HttpServletRequest http) {
         return ApiResponse.ok(settingDefinitionService.list(), requestId(http));
     }
 
     @GetMapping("/active")
+    @PreAuthorize("hasAuthority('USER_READ')")
     public ApiResponse<List<SettingDefinitionResponse>> listActive(HttpServletRequest http) {
         return ApiResponse.ok(settingDefinitionService.listActive(), requestId(http));
     }
 
     @GetMapping("/by-group")
+    @PreAuthorize("hasAuthority('USER_READ')")
     public ApiResponse<List<SettingDefinitionResponse>> listByGroup(@RequestParam String groupCode,
             HttpServletRequest http) {
         return ApiResponse.ok(settingDefinitionService.listByGroup(groupCode), requestId(http));

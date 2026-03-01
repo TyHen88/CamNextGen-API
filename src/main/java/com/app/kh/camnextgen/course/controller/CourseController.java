@@ -7,6 +7,7 @@ import com.app.kh.camnextgen.course.dto.UpdateCourseRequest;
 import com.app.kh.camnextgen.course.service.CourseService;
 import com.app.kh.camnextgen.shared.response.ApiResponse;
 import com.app.kh.camnextgen.shared.response.PageResponse;
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/courses")
+//hide controller
+@Hidden
 public class CourseController {
     private final CourseService courseService;
 

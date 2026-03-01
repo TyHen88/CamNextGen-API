@@ -1,6 +1,6 @@
-package com.app.kh.camnextgen.modules.setting.repository;
+package com.app.kh.camnextgen.setting.repository;
 
-import com.app.kh.camnextgen.modules.setting.domain.SettingDefinition;
+import com.app.kh.camnextgen.setting.domain.SettingDefinition;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -13,7 +13,9 @@ import com.app.kh.camnextgen.auth.dto.LoginRequest;
 import com.app.kh.camnextgen.auth.dto.RefreshTokenRequest;
 import com.app.kh.camnextgen.auth.dto.RegisterRequest;
 import com.app.kh.camnextgen.auth.dto.ResetPasswordRequest;
+import com.app.kh.camnextgen.auth.dto.SendOtpRequest;
 import com.app.kh.camnextgen.auth.dto.VerifyEmailRequest;
+import com.app.kh.camnextgen.auth.dto.VerifyOtpRequest;
 import com.app.kh.camnextgen.auth.service.AuthService;
 import com.app.kh.camnextgen.shared.response.ApiResponse;
 
@@ -47,13 +49,13 @@ public class AuthController {
         return ApiResponse.ok(null, requestId(http));
     }
 
-    @PostMapping("/forgot")
+    @PostMapping("/forgot-password")
     public ApiResponse<Void> forgotPassword(@Valid @RequestBody ForgotPasswordRequest request, HttpServletRequest http) {
         authService.forgotPassword(request);
         return ApiResponse.ok(null, requestId(http));
     }
 
-    @PostMapping("/reset")
+    @PostMapping("/reset-password")
     public ApiResponse<Void> resetPassword(@Valid @RequestBody ResetPasswordRequest request, HttpServletRequest http) {
         authService.resetPassword(request);
         return ApiResponse.ok(null, requestId(http));
@@ -62,6 +64,18 @@ public class AuthController {
     @PostMapping("/refresh")
     public ApiResponse<AuthResponse> refresh(@Valid @RequestBody RefreshTokenRequest request, HttpServletRequest http) {
         return ApiResponse.ok(authService.refreshToken(request), requestId(http));
+    }
+
+    @PostMapping("/send-otp")
+    public ApiResponse<Void> sendOtp(@Valid @RequestBody SendOtpRequest request, HttpServletRequest http) {
+        authService.sendOtp(request);
+        return ApiResponse.ok(null, requestId(http));
+    }
+
+    @PostMapping("/verify-otp")
+    public ApiResponse<Void> verifyOtp(@Valid @RequestBody VerifyOtpRequest request, HttpServletRequest http) {
+        authService.verifyOtp(request);
+        return ApiResponse.ok(null, requestId(http));
     }
 
     private String requestId(HttpServletRequest request) {

@@ -1,4 +1,4 @@
-package com.app.kh.camnextgen.modules.setting.domain;
+package com.app.kh.camnextgen.setting.domain;
 
 import jakarta.persistence.*;
 import java.time.Instant;
