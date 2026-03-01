@@ -15094,3 +15094,371 @@ Caused by: org.postgresql.util.PSQLException: ERROR: relation "email_otps" alrea
     "status" : 200
   }
 }
+2026-03-01 19:02:21.499 DEBUG [corrId:ff8282b3-d66b-49e0-9a16-9eb54d987d76] --- [http-nio-8181-exec-5] org.hibernate.SQL                        : 
+    /* <criteria> */ select
+        eo1_0.id,
+        eo1_0.attempt_count,
+        eo1_0.created_at,
+        eo1_0.email,
+        eo1_0.expires_at,
+        eo1_0.otp_hash,
+        eo1_0.purpose,
+        eo1_0.used_at 
+    from
+        email_otps eo1_0 
+    where
+        eo1_0.email=? 
+        and eo1_0.purpose=? 
+        and eo1_0.used_at is null 
+    order by
+        eo1_0.created_at desc 
+    fetch
+        first ? rows only
+2026-03-01 19:02:21.506 TRACE [corrId:ff8282b3-d66b-49e0-9a16-9eb54d987d76] --- [http-nio-8181-exec-5] org.hibernate.orm.jdbc.bind              : binding parameter (1:VARCHAR) <- [hentyna11@gmail.com]
+2026-03-01 19:02:21.506 TRACE [corrId:ff8282b3-d66b-49e0-9a16-9eb54d987d76] --- [http-nio-8181-exec-5] org.hibernate.orm.jdbc.bind              : binding parameter (2:VARCHAR) <- [PASSWORD_RESET]
+2026-03-01 19:02:21.506 TRACE [corrId:ff8282b3-d66b-49e0-9a16-9eb54d987d76] --- [http-nio-8181-exec-5] org.hibernate.orm.jdbc.bind              : binding parameter (3:INTEGER) <- [1]
+2026-03-01 19:02:21.558  WARN [corrId:ff8282b3-d66b-49e0-9a16-9eb54d987d76] --- [http-nio-8181-exec-5] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.app.kh.camnextgen.shared.exception.BusinessException: OTP has expired]
+2026-03-01 19:02:21.559  INFO [corrId:ff8282b3-d66b-49e0-9a16-9eb54d987d76] --- [http-nio-8181-exec-5] c.a.k.c.s.l.RequestResponseLoggingFilter : request method=POST path=/api/v1/auth/reset-password status=400 durationMs=146 requestId=ff8282b3-d66b-49e0-9a16-9eb54d987d76
+2026-03-01 19:02:21.560  INFO [corrId:ff8282b3-d66b-49e0-9a16-9eb54d987d76] --- [http-nio-8181-exec-5] c.a.k.c.s.logging.RequestLoggingFilter   : 
+{
+  "request" : {
+    "endpoint" : "/api/v1/auth/reset-password",
+    "method" : "POST",
+    "params" : { },
+    "body" : {
+      "email" : "hentyna11@gmail.com",
+      "otp" : "243970",
+      "newPassword" : "******"
+    }
+  },
+  "response" : {
+    "endpoint" : "/api/v1/auth/reset-password",
+    "method" : "POST",
+    "durationMs" : 148,
+    "status" : 400
+  }
+}
+2026-03-01 19:02:42.605 DEBUG [corrId:c49deb3a-a944-4858-b7bc-da078fe317f0] --- [http-nio-8181-exec-7] org.hibernate.SQL                        : 
+    /* <criteria> */ select
+        eo1_0.id,
+        eo1_0.attempt_count,
+        eo1_0.created_at,
+        eo1_0.email,
+        eo1_0.expires_at,
+        eo1_0.otp_hash,
+        eo1_0.purpose,
+        eo1_0.used_at 
+    from
+        email_otps eo1_0 
+    where
+        eo1_0.email=? 
+        and eo1_0.purpose=? 
+        and eo1_0.used_at is null 
+    order by
+        eo1_0.created_at desc 
+    fetch
+        first ? rows only
+2026-03-01 19:02:42.605 TRACE [corrId:c49deb3a-a944-4858-b7bc-da078fe317f0] --- [http-nio-8181-exec-7] org.hibernate.orm.jdbc.bind              : binding parameter (1:VARCHAR) <- [hentyna11@gmail.com]
+2026-03-01 19:02:42.605 TRACE [corrId:c49deb3a-a944-4858-b7bc-da078fe317f0] --- [http-nio-8181-exec-7] org.hibernate.orm.jdbc.bind              : binding parameter (2:VARCHAR) <- [PASSWORD_RESET]
+2026-03-01 19:02:42.605 TRACE [corrId:c49deb3a-a944-4858-b7bc-da078fe317f0] --- [http-nio-8181-exec-7] org.hibernate.orm.jdbc.bind              : binding parameter (3:INTEGER) <- [1]
+2026-03-01 19:02:42.609  WARN [corrId:c49deb3a-a944-4858-b7bc-da078fe317f0] --- [http-nio-8181-exec-7] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [com.app.kh.camnextgen.shared.exception.BusinessException: OTP has expired]
+2026-03-01 19:02:42.609  INFO [corrId:c49deb3a-a944-4858-b7bc-da078fe317f0] --- [http-nio-8181-exec-7] c.a.k.c.s.l.RequestResponseLoggingFilter : request method=POST path=/api/v1/auth/reset-password status=400 durationMs=11 requestId=c49deb3a-a944-4858-b7bc-da078fe317f0
+2026-03-01 19:02:42.609  INFO [corrId:c49deb3a-a944-4858-b7bc-da078fe317f0] --- [http-nio-8181-exec-7] c.a.k.c.s.logging.RequestLoggingFilter   : 
+{
+  "request" : {
+    "endpoint" : "/api/v1/auth/reset-password",
+    "method" : "POST",
+    "params" : { },
+    "body" : {
+      "email" : "hentyna11@gmail.com",
+      "otp" : "243970",
+      "newPassword" : "******"
+    }
+  },
+  "response" : {
+    "endpoint" : "/api/v1/auth/reset-password",
+    "method" : "POST",
+    "durationMs" : 16,
+    "status" : 400
+  }
+}
+2026-03-01 19:03:00.189 DEBUG [corrId:68e1f5d7-7c7f-4a9b-9518-38e51e1bb1c8] --- [http-nio-8181-exec-8] org.hibernate.SQL                        : 
+    /* <criteria> */ select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.full_name,
+        u1_0.password_hash,
+        u1_0.status,
+        u1_0.updated_at,
+        u1_0.updated_by,
+        u1_0.version 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2026-03-01 19:03:00.190 TRACE [corrId:68e1f5d7-7c7f-4a9b-9518-38e51e1bb1c8] --- [http-nio-8181-exec-8] org.hibernate.orm.jdbc.bind              : binding parameter (1:VARCHAR) <- [hentyna11@gmail.com]
+2026-03-01 19:03:00.197 DEBUG [corrId:68e1f5d7-7c7f-4a9b-9518-38e51e1bb1c8] --- [http-nio-8181-exec-8] org.hibernate.SQL                        : 
+    /* <criteria> */ select
+        eo1_0.id,
+        eo1_0.attempt_count,
+        eo1_0.created_at,
+        eo1_0.email,
+        eo1_0.expires_at,
+        eo1_0.otp_hash,
+        eo1_0.purpose,
+        eo1_0.used_at 
+    from
+        email_otps eo1_0 
+    where
+        eo1_0.email=? 
+        and eo1_0.purpose=? 
+        and eo1_0.used_at is null 
+    order by
+        eo1_0.created_at desc 
+    fetch
+        first ? rows only
+2026-03-01 19:03:00.197 TRACE [corrId:68e1f5d7-7c7f-4a9b-9518-38e51e1bb1c8] --- [http-nio-8181-exec-8] org.hibernate.orm.jdbc.bind              : binding parameter (1:VARCHAR) <- [hentyna11@gmail.com]
+2026-03-01 19:03:00.197 TRACE [corrId:68e1f5d7-7c7f-4a9b-9518-38e51e1bb1c8] --- [http-nio-8181-exec-8] org.hibernate.orm.jdbc.bind              : binding parameter (2:VARCHAR) <- [PASSWORD_RESET]
+2026-03-01 19:03:00.197 TRACE [corrId:68e1f5d7-7c7f-4a9b-9518-38e51e1bb1c8] --- [http-nio-8181-exec-8] org.hibernate.orm.jdbc.bind              : binding parameter (3:INTEGER) <- [1]
+2026-03-01 19:03:00.207 DEBUG [corrId:68e1f5d7-7c7f-4a9b-9518-38e51e1bb1c8] --- [http-nio-8181-exec-8] org.hibernate.SQL                        : 
+    /* UPDATE
+        EmailOtp o 
+    SET
+        o.usedAt = :usedAt 
+    WHERE
+        o.email = :email 
+        AND o.purpose = :purpose 
+        AND o.usedAt IS NULL */ update email_otps 
+    set
+        used_at=? 
+    where
+        email=? 
+        and purpose=? 
+        and used_at is null
+2026-03-01 19:03:00.207 TRACE [corrId:68e1f5d7-7c7f-4a9b-9518-38e51e1bb1c8] --- [http-nio-8181-exec-8] org.hibernate.orm.jdbc.bind              : binding parameter (1:TIMESTAMP_UTC) <- [2026-03-01T12:03:00.193632Z]
+2026-03-01 19:03:00.207 TRACE [corrId:68e1f5d7-7c7f-4a9b-9518-38e51e1bb1c8] --- [http-nio-8181-exec-8] org.hibernate.orm.jdbc.bind              : binding parameter (2:VARCHAR) <- [hentyna11@gmail.com]
+2026-03-01 19:03:00.207 TRACE [corrId:68e1f5d7-7c7f-4a9b-9518-38e51e1bb1c8] --- [http-nio-8181-exec-8] org.hibernate.orm.jdbc.bind              : binding parameter (3:VARCHAR) <- [PASSWORD_RESET]
+2026-03-01 19:03:00.320 DEBUG [corrId:68e1f5d7-7c7f-4a9b-9518-38e51e1bb1c8] --- [http-nio-8181-exec-8] org.hibernate.SQL                        : 
+    /* insert for
+        com.app.kh.camnextgen.auth.domain.EmailOtp */insert 
+    into
+        email_otps (attempt_count, created_at, email, expires_at, otp_hash, purpose, used_at) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+2026-03-01 19:03:00.322 TRACE [corrId:68e1f5d7-7c7f-4a9b-9518-38e51e1bb1c8] --- [http-nio-8181-exec-8] org.hibernate.orm.jdbc.bind              : binding parameter (1:INTEGER) <- [0]
+2026-03-01 19:03:00.322 TRACE [corrId:68e1f5d7-7c7f-4a9b-9518-38e51e1bb1c8] --- [http-nio-8181-exec-8] org.hibernate.orm.jdbc.bind              : binding parameter (2:TIMESTAMP_UTC) <- [2026-03-01T12:03:00.193632Z]
+2026-03-01 19:03:00.322 TRACE [corrId:68e1f5d7-7c7f-4a9b-9518-38e51e1bb1c8] --- [http-nio-8181-exec-8] org.hibernate.orm.jdbc.bind              : binding parameter (3:VARCHAR) <- [hentyna11@gmail.com]
+2026-03-01 19:03:00.322 TRACE [corrId:68e1f5d7-7c7f-4a9b-9518-38e51e1bb1c8] --- [http-nio-8181-exec-8] org.hibernate.orm.jdbc.bind              : binding parameter (4:TIMESTAMP_UTC) <- [2026-03-01T12:08:00.193632Z]
+2026-03-01 19:03:00.322 TRACE [corrId:68e1f5d7-7c7f-4a9b-9518-38e51e1bb1c8] --- [http-nio-8181-exec-8] org.hibernate.orm.jdbc.bind              : binding parameter (5:VARCHAR) <- [$2a$10$2c6/giyoMH4a8QddqC7l/eOjDgtzskleXVqLanA5HKuMmK54lK7za]
+2026-03-01 19:03:00.322 TRACE [corrId:68e1f5d7-7c7f-4a9b-9518-38e51e1bb1c8] --- [http-nio-8181-exec-8] org.hibernate.orm.jdbc.bind              : binding parameter (6:VARCHAR) <- [PASSWORD_RESET]
+2026-03-01 19:03:00.322 TRACE [corrId:68e1f5d7-7c7f-4a9b-9518-38e51e1bb1c8] --- [http-nio-8181-exec-8] org.hibernate.orm.jdbc.bind              : binding parameter (7:TIMESTAMP_UTC) <- [null]
+2026-03-01 19:03:00.331  INFO [corrId:68e1f5d7-7c7f-4a9b-9518-38e51e1bb1c8] --- [http-nio-8181-exec-8] c.a.k.c.auth.service.EmailService        : Sending email from: hentyna11@gmail.com to: hentyna11@gmail.com with subject: CamNextGen verification code
+2026-03-01 19:03:03.845  INFO [corrId:68e1f5d7-7c7f-4a9b-9518-38e51e1bb1c8] --- [http-nio-8181-exec-8] c.a.k.c.auth.service.EmailService        : Email sent successfully from: hentyna11@gmail.com to: hentyna11@gmail.com
+2026-03-01 19:03:03.855  INFO [corrId:68e1f5d7-7c7f-4a9b-9518-38e51e1bb1c8] --- [http-nio-8181-exec-8] c.a.k.c.auth.service.OtpServiceImpl      : OTP sent for email=hentyna11@gmail.com purpose=PASSWORD_RESET
+2026-03-01 19:03:03.891 DEBUG [corrId:68e1f5d7-7c7f-4a9b-9518-38e51e1bb1c8] --- [http-nio-8181-exec-8] org.hibernate.SQL                        : 
+    /* insert for
+        com.app.kh.camnextgen.shared.infra.audit.domain.AuditLog */insert 
+    into
+        audit_logs (actor_user_id, created_at, details_json, event) 
+    values
+        (?, ?, ?, ?)
+2026-03-01 19:03:03.892 TRACE [corrId:68e1f5d7-7c7f-4a9b-9518-38e51e1bb1c8] --- [http-nio-8181-exec-8] org.hibernate.orm.jdbc.bind              : binding parameter (1:BIGINT) <- [5]
+2026-03-01 19:03:03.893 TRACE [corrId:68e1f5d7-7c7f-4a9b-9518-38e51e1bb1c8] --- [http-nio-8181-exec-8] org.hibernate.orm.jdbc.bind              : binding parameter (2:TIMESTAMP_UTC) <- [2026-03-01T12:03:03.865088Z]
+2026-03-01 19:03:03.894 TRACE [corrId:68e1f5d7-7c7f-4a9b-9518-38e51e1bb1c8] --- [http-nio-8181-exec-8] org.hibernate.orm.jdbc.bind              : binding parameter (3:VARCHAR) <- [null]
+2026-03-01 19:03:03.894 TRACE [corrId:68e1f5d7-7c7f-4a9b-9518-38e51e1bb1c8] --- [http-nio-8181-exec-8] org.hibernate.orm.jdbc.bind              : binding parameter (4:VARCHAR) <- [PASSWORD_RESET_REQUEST]
+2026-03-01 19:03:03.920  INFO [corrId:68e1f5d7-7c7f-4a9b-9518-38e51e1bb1c8] --- [http-nio-8181-exec-8] c.a.k.c.s.l.RequestResponseLoggingFilter : request method=POST path=/api/v1/auth/forgot-password status=200 durationMs=3746 requestId=68e1f5d7-7c7f-4a9b-9518-38e51e1bb1c8
+2026-03-01 19:03:03.921  INFO [corrId:68e1f5d7-7c7f-4a9b-9518-38e51e1bb1c8] --- [http-nio-8181-exec-8] c.a.k.c.s.logging.RequestLoggingFilter   : 
+{
+  "request" : {
+    "endpoint" : "/api/v1/auth/forgot-password",
+    "method" : "POST",
+    "params" : { },
+    "body" : {
+      "email" : "hentyna11@gmail.com"
+    }
+  },
+  "response" : {
+    "endpoint" : "/api/v1/auth/forgot-password",
+    "method" : "POST",
+    "durationMs" : 3746,
+    "status" : 200
+  }
+}
+2026-03-01 19:03:31.579 DEBUG [corrId:16ada82f-e051-4630-8fcb-7a5650440a62] --- [http-nio-8181-exec-10] org.hibernate.SQL                        : 
+    /* <criteria> */ select
+        eo1_0.id,
+        eo1_0.attempt_count,
+        eo1_0.created_at,
+        eo1_0.email,
+        eo1_0.expires_at,
+        eo1_0.otp_hash,
+        eo1_0.purpose,
+        eo1_0.used_at 
+    from
+        email_otps eo1_0 
+    where
+        eo1_0.email=? 
+        and eo1_0.purpose=? 
+        and eo1_0.used_at is null 
+    order by
+        eo1_0.created_at desc 
+    fetch
+        first ? rows only
+2026-03-01 19:03:31.582 TRACE [corrId:16ada82f-e051-4630-8fcb-7a5650440a62] --- [http-nio-8181-exec-10] org.hibernate.orm.jdbc.bind              : binding parameter (1:VARCHAR) <- [hentyna11@gmail.com]
+2026-03-01 19:03:31.582 TRACE [corrId:16ada82f-e051-4630-8fcb-7a5650440a62] --- [http-nio-8181-exec-10] org.hibernate.orm.jdbc.bind              : binding parameter (2:VARCHAR) <- [PASSWORD_RESET]
+2026-03-01 19:03:31.582 TRACE [corrId:16ada82f-e051-4630-8fcb-7a5650440a62] --- [http-nio-8181-exec-10] org.hibernate.orm.jdbc.bind              : binding parameter (3:INTEGER) <- [1]
+2026-03-01 19:03:31.676 DEBUG [corrId:16ada82f-e051-4630-8fcb-7a5650440a62] --- [http-nio-8181-exec-10] org.hibernate.SQL                        : 
+    /* <criteria> */ select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.full_name,
+        u1_0.password_hash,
+        u1_0.status,
+        u1_0.updated_at,
+        u1_0.updated_by,
+        u1_0.version 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2026-03-01 19:03:31.676 TRACE [corrId:16ada82f-e051-4630-8fcb-7a5650440a62] --- [http-nio-8181-exec-10] org.hibernate.orm.jdbc.bind              : binding parameter (1:VARCHAR) <- [hentyna11@gmail.com]
+2026-03-01 19:03:31.760 DEBUG [corrId:16ada82f-e051-4630-8fcb-7a5650440a62] --- [http-nio-8181-exec-10] org.hibernate.SQL                        : 
+    /* insert for
+        com.app.kh.camnextgen.shared.infra.audit.domain.AuditLog */insert 
+    into
+        audit_logs (actor_user_id, created_at, details_json, event) 
+    values
+        (?, ?, ?, ?)
+2026-03-01 19:03:31.760 TRACE [corrId:16ada82f-e051-4630-8fcb-7a5650440a62] --- [http-nio-8181-exec-10] org.hibernate.orm.jdbc.bind              : binding parameter (1:BIGINT) <- [5]
+2026-03-01 19:03:31.760 TRACE [corrId:16ada82f-e051-4630-8fcb-7a5650440a62] --- [http-nio-8181-exec-10] org.hibernate.orm.jdbc.bind              : binding parameter (2:TIMESTAMP_UTC) <- [2026-03-01T12:03:31.759974Z]
+2026-03-01 19:03:31.760 TRACE [corrId:16ada82f-e051-4630-8fcb-7a5650440a62] --- [http-nio-8181-exec-10] org.hibernate.orm.jdbc.bind              : binding parameter (3:VARCHAR) <- [null]
+2026-03-01 19:03:31.761 TRACE [corrId:16ada82f-e051-4630-8fcb-7a5650440a62] --- [http-nio-8181-exec-10] org.hibernate.orm.jdbc.bind              : binding parameter (4:VARCHAR) <- [PASSWORD_RESET]
+2026-03-01 19:03:31.768 DEBUG [corrId:16ada82f-e051-4630-8fcb-7a5650440a62] --- [http-nio-8181-exec-10] org.hibernate.SQL                        : 
+    /* update
+        for com.app.kh.camnextgen.auth.domain.EmailOtp */update email_otps 
+    set
+        attempt_count=?,
+        created_at=?,
+        email=?,
+        expires_at=?,
+        otp_hash=?,
+        purpose=?,
+        used_at=? 
+    where
+        id=?
+2026-03-01 19:03:31.768 TRACE [corrId:16ada82f-e051-4630-8fcb-7a5650440a62] --- [http-nio-8181-exec-10] org.hibernate.orm.jdbc.bind              : binding parameter (1:INTEGER) <- [0]
+2026-03-01 19:03:31.768 TRACE [corrId:16ada82f-e051-4630-8fcb-7a5650440a62] --- [http-nio-8181-exec-10] org.hibernate.orm.jdbc.bind              : binding parameter (2:TIMESTAMP_UTC) <- [2026-03-01T12:03:00.193632Z]
+2026-03-01 19:03:31.768 TRACE [corrId:16ada82f-e051-4630-8fcb-7a5650440a62] --- [http-nio-8181-exec-10] org.hibernate.orm.jdbc.bind              : binding parameter (3:VARCHAR) <- [hentyna11@gmail.com]
+2026-03-01 19:03:31.768 TRACE [corrId:16ada82f-e051-4630-8fcb-7a5650440a62] --- [http-nio-8181-exec-10] org.hibernate.orm.jdbc.bind              : binding parameter (4:TIMESTAMP_UTC) <- [2026-03-01T12:08:00.193632Z]
+2026-03-01 19:03:31.768 TRACE [corrId:16ada82f-e051-4630-8fcb-7a5650440a62] --- [http-nio-8181-exec-10] org.hibernate.orm.jdbc.bind              : binding parameter (5:VARCHAR) <- [$2a$10$2c6/giyoMH4a8QddqC7l/eOjDgtzskleXVqLanA5HKuMmK54lK7za]
+2026-03-01 19:03:31.768 TRACE [corrId:16ada82f-e051-4630-8fcb-7a5650440a62] --- [http-nio-8181-exec-10] org.hibernate.orm.jdbc.bind              : binding parameter (6:VARCHAR) <- [PASSWORD_RESET]
+2026-03-01 19:03:31.768 TRACE [corrId:16ada82f-e051-4630-8fcb-7a5650440a62] --- [http-nio-8181-exec-10] org.hibernate.orm.jdbc.bind              : binding parameter (7:TIMESTAMP_UTC) <- [2026-03-01T12:03:31.558977Z]
+2026-03-01 19:03:31.768 TRACE [corrId:16ada82f-e051-4630-8fcb-7a5650440a62] --- [http-nio-8181-exec-10] org.hibernate.orm.jdbc.bind              : binding parameter (8:BIGINT) <- [9]
+2026-03-01 19:03:31.774 DEBUG [corrId:16ada82f-e051-4630-8fcb-7a5650440a62] --- [http-nio-8181-exec-10] org.hibernate.SQL                        : 
+    /* update
+        for com.app.kh.camnextgen.user.domain.User */update users 
+    set
+        created_by=?,
+        email=?,
+        full_name=?,
+        password_hash=?,
+        status=?,
+        updated_at=?,
+        updated_by=?,
+        version=? 
+    where
+        id=? 
+        and version=?
+2026-03-01 19:03:31.774 TRACE [corrId:16ada82f-e051-4630-8fcb-7a5650440a62] --- [http-nio-8181-exec-10] org.hibernate.orm.jdbc.bind              : binding parameter (1:BIGINT) <- [null]
+2026-03-01 19:03:31.774 TRACE [corrId:16ada82f-e051-4630-8fcb-7a5650440a62] --- [http-nio-8181-exec-10] org.hibernate.orm.jdbc.bind              : binding parameter (2:VARCHAR) <- [hentyna11@gmail.com]
+2026-03-01 19:03:31.774 TRACE [corrId:16ada82f-e051-4630-8fcb-7a5650440a62] --- [http-nio-8181-exec-10] org.hibernate.orm.jdbc.bind              : binding parameter (3:VARCHAR) <- [Hen Tyna]
+2026-03-01 19:03:31.774 TRACE [corrId:16ada82f-e051-4630-8fcb-7a5650440a62] --- [http-nio-8181-exec-10] org.hibernate.orm.jdbc.bind              : binding parameter (4:VARCHAR) <- [$2a$10$S9V4XVQ7h1SrFjSBUf.4I.wZDJFYAkZmDVnaYDeeKvlAQ7ZzmO45S]
+2026-03-01 19:03:31.774 TRACE [corrId:16ada82f-e051-4630-8fcb-7a5650440a62] --- [http-nio-8181-exec-10] org.hibernate.orm.jdbc.bind              : binding parameter (5:VARCHAR) <- [ACTIVE]
+2026-03-01 19:03:31.774 TRACE [corrId:16ada82f-e051-4630-8fcb-7a5650440a62] --- [http-nio-8181-exec-10] org.hibernate.orm.jdbc.bind              : binding parameter (6:TIMESTAMP_UTC) <- [2026-03-01T12:03:31.765993Z]
+2026-03-01 19:03:31.774 TRACE [corrId:16ada82f-e051-4630-8fcb-7a5650440a62] --- [http-nio-8181-exec-10] org.hibernate.orm.jdbc.bind              : binding parameter (7:BIGINT) <- [null]
+2026-03-01 19:03:31.774 TRACE [corrId:16ada82f-e051-4630-8fcb-7a5650440a62] --- [http-nio-8181-exec-10] org.hibernate.orm.jdbc.bind              : binding parameter (8:BIGINT) <- [4]
+2026-03-01 19:03:31.774 TRACE [corrId:16ada82f-e051-4630-8fcb-7a5650440a62] --- [http-nio-8181-exec-10] org.hibernate.orm.jdbc.bind              : binding parameter (9:BIGINT) <- [5]
+2026-03-01 19:03:31.774 TRACE [corrId:16ada82f-e051-4630-8fcb-7a5650440a62] --- [http-nio-8181-exec-10] org.hibernate.orm.jdbc.bind              : binding parameter (10:BIGINT) <- [3]
+2026-03-01 19:03:31.781  INFO [corrId:16ada82f-e051-4630-8fcb-7a5650440a62] --- [http-nio-8181-exec-10] c.a.k.c.s.l.RequestResponseLoggingFilter : request method=POST path=/api/v1/auth/reset-password status=200 durationMs=240 requestId=16ada82f-e051-4630-8fcb-7a5650440a62
+2026-03-01 19:03:31.783  INFO [corrId:16ada82f-e051-4630-8fcb-7a5650440a62] --- [http-nio-8181-exec-10] c.a.k.c.s.logging.RequestLoggingFilter   : 
+{
+  "request" : {
+    "endpoint" : "/api/v1/auth/reset-password",
+    "method" : "POST",
+    "params" : { },
+    "body" : {
+      "email" : "hentyna11@gmail.com",
+      "otp" : "425651",
+      "newPassword" : "******"
+    }
+  },
+  "response" : {
+    "endpoint" : "/api/v1/auth/reset-password",
+    "method" : "POST",
+    "durationMs" : 241,
+    "status" : 200
+  }
+}
+2026-03-01 19:03:43.865 DEBUG [corrId:d9bd97e1-3b81-4ce3-8172-c5a758d55149] --- [http-nio-8181-exec-1] org.hibernate.SQL                        : 
+    /* <criteria> */ select
+        u1_0.id,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.email,
+        u1_0.full_name,
+        u1_0.password_hash,
+        u1_0.status,
+        u1_0.updated_at,
+        u1_0.updated_by,
+        u1_0.version 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2026-03-01 19:03:43.866 TRACE [corrId:d9bd97e1-3b81-4ce3-8172-c5a758d55149] --- [http-nio-8181-exec-1] org.hibernate.orm.jdbc.bind              : binding parameter (1:VARCHAR) <- [hentyna11@gmail.com]
+2026-03-01 19:03:43.972 DEBUG [corrId:d9bd97e1-3b81-4ce3-8172-c5a758d55149] --- [http-nio-8181-exec-1] org.hibernate.SQL                        : 
+    /* insert for
+        com.app.kh.camnextgen.auth.domain.RefreshToken */insert 
+    into
+        refresh_tokens (created_at, expires_at, revoked_at, token, user_id) 
+    values
+        (?, ?, ?, ?, ?)
+2026-03-01 19:03:43.974 TRACE [corrId:d9bd97e1-3b81-4ce3-8172-c5a758d55149] --- [http-nio-8181-exec-1] org.hibernate.orm.jdbc.bind              : binding parameter (1:TIMESTAMP_UTC) <- [2026-03-01T12:03:43.971301Z]
+2026-03-01 19:03:43.974 TRACE [corrId:d9bd97e1-3b81-4ce3-8172-c5a758d55149] --- [http-nio-8181-exec-1] org.hibernate.orm.jdbc.bind              : binding parameter (2:TIMESTAMP_UTC) <- [2026-03-31T12:03:43.971302Z]
+2026-03-01 19:03:43.974 TRACE [corrId:d9bd97e1-3b81-4ce3-8172-c5a758d55149] --- [http-nio-8181-exec-1] org.hibernate.orm.jdbc.bind              : binding parameter (3:TIMESTAMP_UTC) <- [null]
+2026-03-01 19:03:43.974 TRACE [corrId:d9bd97e1-3b81-4ce3-8172-c5a758d55149] --- [http-nio-8181-exec-1] org.hibernate.orm.jdbc.bind              : binding parameter (4:VARCHAR) <- [eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1IiwiaXNzIjoiY2FtbmV4dGdlbiIsImlhdCI6MTc3MjM2NjYyMywiZXhwIjoxNzc0OTU4NjIzfQ.K0gaYMN6AApb3NBHpDAqHrvQE00Zd6Ih1zsH-swN0-4]
+2026-03-01 19:03:43.974 TRACE [corrId:d9bd97e1-3b81-4ce3-8172-c5a758d55149] --- [http-nio-8181-exec-1] org.hibernate.orm.jdbc.bind              : binding parameter (5:BIGINT) <- [5]
+2026-03-01 19:03:43.977 DEBUG [corrId:d9bd97e1-3b81-4ce3-8172-c5a758d55149] --- [http-nio-8181-exec-1] org.hibernate.SQL                        : 
+    /* insert for
+        com.app.kh.camnextgen.shared.infra.audit.domain.AuditLog */insert 
+    into
+        audit_logs (actor_user_id, created_at, details_json, event) 
+    values
+        (?, ?, ?, ?)
+2026-03-01 19:03:43.977 TRACE [corrId:d9bd97e1-3b81-4ce3-8172-c5a758d55149] --- [http-nio-8181-exec-1] org.hibernate.orm.jdbc.bind              : binding parameter (1:BIGINT) <- [5]
+2026-03-01 19:03:43.977 TRACE [corrId:d9bd97e1-3b81-4ce3-8172-c5a758d55149] --- [http-nio-8181-exec-1] org.hibernate.orm.jdbc.bind              : binding parameter (2:TIMESTAMP_UTC) <- [2026-03-01T12:03:43.977596Z]
+2026-03-01 19:03:43.977 TRACE [corrId:d9bd97e1-3b81-4ce3-8172-c5a758d55149] --- [http-nio-8181-exec-1] org.hibernate.orm.jdbc.bind              : binding parameter (3:VARCHAR) <- [null]
+2026-03-01 19:03:43.978 TRACE [corrId:d9bd97e1-3b81-4ce3-8172-c5a758d55149] --- [http-nio-8181-exec-1] org.hibernate.orm.jdbc.bind              : binding parameter (4:VARCHAR) <- [USER_LOGIN]
+2026-03-01 19:03:43.983  INFO [corrId:d9bd97e1-3b81-4ce3-8172-c5a758d55149] --- [http-nio-8181-exec-1] c.a.k.c.s.l.RequestResponseLoggingFilter : request method=POST path=/api/v1/auth/login status=200 durationMs=141 requestId=d9bd97e1-3b81-4ce3-8172-c5a758d55149
+2026-03-01 19:03:43.983  INFO [corrId:d9bd97e1-3b81-4ce3-8172-c5a758d55149] --- [http-nio-8181-exec-1] c.a.k.c.s.logging.RequestLoggingFilter   : 
+{
+  "request" : {
+    "endpoint" : "/api/v1/auth/login",
+    "method" : "POST",
+    "params" : { },
+    "body" : {
+      "email" : "hentyna11@gmail.com",
+      "password" : "******"
+    }
+  },
+  "response" : {
+    "endpoint" : "/api/v1/auth/login",
+    "method" : "POST",
+    "durationMs" : 141,
+    "status" : 200
+  }
+}
