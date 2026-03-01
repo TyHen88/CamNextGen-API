@@ -32,7 +32,7 @@ public class SettingDefinitionController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('USER_WRITE')")
+    @PreAuthorize("hasAuthority('SYSTEM_SETTINGS_MANAGE')")
     @ResponseStatus(HttpStatus.CREATED)
     public ApiResponse<SettingDefinitionResponse> create(@Valid @RequestBody CreateSettingDefinitionRequest request,
             HttpServletRequest http) {
@@ -40,7 +40,7 @@ public class SettingDefinitionController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('USER_WRITE')")
+    @PreAuthorize("hasAuthority('SYSTEM_SETTINGS_MANAGE')")
     public ApiResponse<SettingDefinitionResponse> update(@PathVariable Long id,
             @Valid @RequestBody UpdateSettingDefinitionRequest request,
             HttpServletRequest http) {
@@ -48,32 +48,32 @@ public class SettingDefinitionController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('USER_READ')")
+    @PreAuthorize("hasAuthority('SYSTEM_SETTINGS_MANAGE')")
     public ApiResponse<SettingDefinitionResponse> getById(@PathVariable Long id, HttpServletRequest http) {
         return ApiResponse.ok(settingDefinitionService.getById(id), requestId(http));
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('USER_WRITE')")
+    @PreAuthorize("hasAuthority('SYSTEM_SETTINGS_MANAGE')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) {
         settingDefinitionService.delete(id);
     }
 
     @GetMapping
-    @PreAuthorize("hasAuthority('USER_READ')")
+    @PreAuthorize("hasAuthority('SYSTEM_SETTINGS_MANAGE')")
     public ApiResponse<List<SettingDefinitionResponse>> list(HttpServletRequest http) {
         return ApiResponse.ok(settingDefinitionService.list(), requestId(http));
     }
 
     @GetMapping("/active")
-    @PreAuthorize("hasAuthority('USER_READ')")
+    @PreAuthorize("hasAuthority('SYSTEM_SETTINGS_MANAGE')")
     public ApiResponse<List<SettingDefinitionResponse>> listActive(HttpServletRequest http) {
         return ApiResponse.ok(settingDefinitionService.listActive(), requestId(http));
     }
 
     @GetMapping("/by-group")
-    @PreAuthorize("hasAuthority('USER_READ')")
+    @PreAuthorize("hasAuthority('SYSTEM_SETTINGS_MANAGE')")
     public ApiResponse<List<SettingDefinitionResponse>> listByGroup(@RequestParam String groupCode,
             HttpServletRequest http) {
         return ApiResponse.ok(settingDefinitionService.listByGroup(groupCode), requestId(http));

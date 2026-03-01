@@ -3,7 +3,17 @@ package com.app.kh.camnextgen.user.repository;
 import com.app.kh.camnextgen.user.domain.UserRole;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface UserRoleRepository extends JpaRepository<UserRole, Long> {
     List<UserRole> findByUserId(Long userId);
+
+    @Query("select count(ur) > 0 from UserRole ur where ur.user.id = :userId and ur.role.code = :roleCode")
+    boolean existsByUserIdAndRoleCode(@Param("userId") Long userId, @Param("roleCode") String roleCode);
+
+    @Modifying
+    @Query("delete from UserRole ur where ur.user.id = :userId and ur.role.code = :roleCode")
+    void deleteByUserIdAndRoleCode(@Param("userId") Long userId, @Param("roleCode") String roleCode);
 }

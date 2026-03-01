@@ -62,7 +62,7 @@ public class OtpServiceImpl implements OtpService {
 
     @Override
     @Transactional
-    public void verifyOtp(String email, String otp, OtpPurpose purpose) {
+    public void verifyOtp(String email, String otp, OtpPurpose purpose, boolean consumeOnSuccess) {
         String normalizedEmail = normalizeEmail(email);
         Instant now = Instant.now();
 
@@ -81,10 +81,12 @@ public class OtpServiceImpl implements OtpService {
             throw new BusinessException("INVALID_OTP", "Invalid OTP");
         }
 
-        entity.markUsed(now);
-        emailOtpRepository.save(entity);
+        if (consumeOnSuccess) {
+            entity.markUsed(now);
+            emailOtpRepository.save(entity);
+        }
 
-        if (purpose == OtpPurpose.EMAIL_VERIFICATION) {
+        if (consumeOnSuccess && purpose == OtpPurpose.EMAIL_VERIFICATION) {
             User user = userRepository.findByEmail(normalizedEmail)
                 .orElseThrow(() -> new BusinessException("EMAIL_NOT_FOUND", "Email not found"));
             user.setStatus(UserStatus.ACTIVE);

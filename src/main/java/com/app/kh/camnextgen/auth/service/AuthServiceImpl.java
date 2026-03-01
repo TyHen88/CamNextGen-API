@@ -140,7 +140,7 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     public void resetPassword(ResetPasswordRequest request) {
         String email = request.email().trim().toLowerCase();
-        otpService.verifyOtp(email, request.otp(), OtpPurpose.PASSWORD_RESET);
+        otpService.verifyOtp(email, request.otp(), OtpPurpose.PASSWORD_RESET, true);
         User user = userRepository.findByEmail(email)
             .orElseThrow(() -> new BusinessException("EMAIL_NOT_FOUND", "Email not found"));
         user.setPasswordHash(passwordEncoder.encode(request.newPassword()));
@@ -172,7 +172,8 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional
     public void verifyOtp(VerifyOtpRequest request) {
-        otpService.verifyOtp(request.email(), request.otp(), request.purpose());
+        boolean consumeOnSuccess = request.purpose() != OtpPurpose.PASSWORD_RESET;
+        otpService.verifyOtp(request.email(), request.otp(), request.purpose(), consumeOnSuccess);
     }
 
     @Override
