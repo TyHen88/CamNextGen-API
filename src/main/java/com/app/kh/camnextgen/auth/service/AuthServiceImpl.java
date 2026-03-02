@@ -85,8 +85,9 @@ public class AuthServiceImpl implements AuthService {
             orgName = "CamNextGen";
         }
         orgName = orgName.trim();
+        String finalOrgName = orgName;
         Organization organization = organizationRepository.findByNameIgnoreCase(orgName)
-                .orElseGet(() -> createOrganization(orgName));
+                .orElseGet(() -> createOrganization(finalOrgName));
 
         User user = new User();
         user.setEmail(request.email().toLowerCase());
