@@ -15,6 +15,9 @@ import com.app.kh.camnextgen.auth.dto.VerifyEmailRequest;
 import com.app.kh.camnextgen.auth.dto.VerifyOtpRequest;
 import com.app.kh.camnextgen.auth.repository.RefreshTokenRepository;
 import com.app.kh.camnextgen.auth.repository.VerificationTokenRepository;
+import com.app.kh.camnextgen.organization.domain.Organization;
+import com.app.kh.camnextgen.organization.domain.OrganizationType;
+import com.app.kh.camnextgen.organization.repository.OrganizationRepository;
 import com.app.kh.camnextgen.user.domain.Role;
 import com.app.kh.camnextgen.user.domain.User;
 import com.app.kh.camnextgen.user.domain.UserRole;
@@ -26,6 +29,7 @@ import com.app.kh.camnextgen.shared.exception.BusinessException;
 import com.app.kh.camnextgen.shared.exception.NotFoundException;
 import com.app.kh.camnextgen.shared.security.SecurityUtils;
 import java.time.Instant;
+import java.util.Locale;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -44,6 +48,7 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final AuditLogService auditLogService;
     private final OtpService otpService;
+    private final OrganizationRepository organizationRepository;
 
     public AuthServiceImpl(UserRepository userRepository,
                            RoleRepository roleRepository,
@@ -53,7 +58,8 @@ public class AuthServiceImpl implements AuthService {
                            TokenService tokenService,
                            PasswordEncoder passwordEncoder,
                            AuditLogService auditLogService,
-                           OtpService otpService) {
+                           OtpService otpService,
+                           OrganizationRepository organizationRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.userRoleRepository = userRoleRepository;
@@ -63,6 +69,7 @@ public class AuthServiceImpl implements AuthService {
         this.passwordEncoder = passwordEncoder;
         this.auditLogService = auditLogService;
         this.otpService = otpService;
+        this.organizationRepository = organizationRepository;
     }
 
     @Override
@@ -72,11 +79,21 @@ public class AuthServiceImpl implements AuthService {
             throw new BusinessException("EMAIL_EXISTS", "Email already registered");
         }
 
+        // Resolve organization from request, default to "CamNextGen" if not provided
+        String orgName = request.organizationName();
+        if (orgName == null || orgName.isBlank()) {
+            orgName = "CamNextGen";
+        }
+        orgName = orgName.trim();
+        Organization organization = organizationRepository.findByNameIgnoreCase(orgName)
+                .orElseGet(() -> createOrganization(orgName));
+
         User user = new User();
         user.setEmail(request.email().toLowerCase());
         user.setPasswordHash(passwordEncoder.encode(request.password()));
         user.setFullName(request.fullName());
         user.setStatus(UserStatus.PENDING);
+        user.setOrganization(organization);
         userRepository.save(user);
 
         Role role = roleRepository.findByCode("STUDENT")
@@ -186,5 +203,40 @@ public class AuthServiceImpl implements AuthService {
         refreshTokenRepository.revokeAllByUserId(userId);
         auditLogService.logEvent("USER_LOGOUT", userId, null);
         log.info("User logged out successfully: {}", userId);
+    }
+
+    private Organization createOrganization(String name) {
+        boolean isDefaultOrg = "CamNextGen".equalsIgnoreCase(name);
+        Organization organization = new Organization();
+        organization.setName(name);
+        organization.setCode(generateUniqueCode(name));
+        organization.setType(isDefaultOrg ? OrganizationType.SYSTEM : OrganizationType.CUSTOM);
+        organization.setActive(true);
+        return organizationRepository.save(organization);
+    }
+
+    /**
+     * Generates a unique, uppercase, URL-safe organization code within 60 chars.
+     * Falls back to appending incremental suffixes when collisions occur.
+     */
+    private String generateUniqueCode(String name) {
+        String base = name == null ? "" : name.toUpperCase(Locale.ROOT).replaceAll("[^A-Z0-9]+", "_");
+        base = base.replaceAll("^_+|_+$", "");
+        if (base.isBlank()) {
+            base = "ORG";
+        }
+        if (base.length() > 50) { // leave room for suffixes
+            base = base.substring(0, 50);
+        }
+        String candidate = base;
+        int suffix = 1;
+        while (organizationRepository.existsByCode(candidate)) {
+            String suffixPart = "_" + suffix;
+            int maxBaseLen = 60 - suffixPart.length();
+            String trimmedBase = base.length() > maxBaseLen ? base.substring(0, maxBaseLen) : base;
+            candidate = trimmedBase + suffixPart;
+            suffix++;
+        }
+        return candidate;
     }
 }
